@@ -3,6 +3,9 @@ html
   head
     link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Alegreya+Sans+SC")
     link(rel="stylesheet", href="/css/style.css")
+    script(type="text/javascript", src="/js/socket.io.min.js")
+    script(type="text/javascript", src="/js/jquery-2.1.0.min.js")
+    script(type="text/javascript", src="/js/index.js")
     title Math Game
   body
     h1 Play a new Game
@@ -16,7 +19,7 @@ html
             maxlength=200)#outgoingMessage
           input(type="button", value="Share", disabled=true)#send
       div.inlineBlock.topAligned
-        b Participants
+        b Players
         br
-        div#participants
+        div#players
     div#messages
