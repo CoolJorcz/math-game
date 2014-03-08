@@ -9,11 +9,11 @@
 
 */
 
-var express = require("express")
-   , app = express()
-   , http = require("http").createServer(app)
-   , io = require("socket.io").listen(http)
-   , _ = require("underscore");
+var express = require("express"),
+    app = express(),
+    http = require("http").createServer(app),
+    io = require("socket.io").listen(http),
+    _ = require("underscore");
 
 /*
   The list of players.
@@ -22,12 +22,12 @@ var express = require("express")
     {
       id: "sessionId",
       name: "playerName",
-
+      score: "playerScore"
     }
 
 */
 
-var player = []
+var players = []
 
 // Server config
 
@@ -84,14 +84,14 @@ app.post("/message", function(request, response) {
 io.on("connection", function(socket){
 
   socket.on("newUser", function(data) {
-    players.push({id: data.id, name: data.name});
+    players.push({id: data.id, name: data.name, score: data.score});
     io.sockets.emit("newConnection", {players: players});
   });
 
 
-  socket.on("nameChange", function(data) {
+  socket.on("scoreChange", function(data) {
     _.findWhere(players, {id: socket.id}).name = data.name;
-    io.sockets.emit("nameChanged", {id: data.id, name: data.name});
+    io.sockets.emit("scoreChanged", {id: data.id, name: data.name, score: data.score});
   });
 
 
