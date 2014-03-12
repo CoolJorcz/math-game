@@ -4,12 +4,12 @@ var express = require('express'),
     path = require('path'),
     _ = require('underscore'),
     app = express(),
-    mathGame = require('./game'),
+    mathGame = require('./game');
     app.configure(function(){
-      app.use(express.logger('dev'));
+      //app.use(express.logger('dev'));
       app.use(express.static(path.join(__dirname, 'public')));
     });
-    server = require('http').createServer(app).listen(8080);
+var server = require('http').createServer(app).listen(8000);
 
 
 //Views and assets
@@ -22,7 +22,7 @@ var express = require('express'),
 //Listen for Socket.IO connections
 var io = require('socket.io').listen(server);
 
-io.set('log level',1);
+//io.set('log level',1);
 
 io.sockets.on('connection', function(socket){
   console.log("client connected");

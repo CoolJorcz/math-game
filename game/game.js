@@ -1,5 +1,6 @@
 var io;
 var gameSocket;
+var _ = require('underscore');
 
 /*******************************************
 
@@ -50,7 +51,7 @@ function hostPrepareGame(gameID){
   var sock = this;
   var data = {
     mySocketId : sock.id,
-    gameId : gameId
+    gameId : gameID
   };
   io.sockets.in(data.gameId).emit('beginNewGame', data);
 }
@@ -149,7 +150,7 @@ function getQuestionData(i){
   // Take first question
   // First element will be the displayed question, 2nd will be answer hidden amongst incorrect answers
 
-  var questAnsw = questionAnswer[i];
+  var questAnsw = questionPool[i].questionAnswer;
 
   //Randomize order of decoy answers and inject answer.
 

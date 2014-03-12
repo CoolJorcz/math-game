@@ -101,6 +101,8 @@ jQuery(function($) {
 
     //Click handlers for the various buttons on screen
   bindEvents: function(){
+
+    App.$doc.on('click', '#btnCreateGame', App.Host.onCreateClick);
     App.$doc.on('click', '#btnJoinGame', App.Player.onJoinClick);
     App.$doc.on('click', '#btnStart', App.Player.onPlayerStartClick);
     App.$doc.on('click', '#btnAnswer', App.Player.onPlayerAnswerClick);
@@ -152,7 +154,7 @@ jQuery(function($) {
         App.myRole = 'Host';
         App.Host.numPlayersInRoom = 0;
 
-        App.Host.displaysNewGameScreen();
+        App.Host.displayNewGameScreen();
       },
 
       displayNewGameScreen : function(){
@@ -176,30 +178,43 @@ jQuery(function($) {
 
         App.Host.numPlayersInRoom += 1;
 
-        if (App.Host.numPlayersInRoom >= 1) {
+        if (App.Host.numPlayersInRoom === 2) {
           IO.socket.emit('hostRoomFull', App.gameId)
         }
       },
 
       gameCountdown: function(){
         App.$gameArea.html(App.$hostGame);
+
         App.doTextFit('#hostQuestion');
 
         var $secondsLeft = $('#hostQuestion');
         App.countDown( $secondsLeft, 5, function(){
-          IO.sockets.emit('hostCountdownFinished', App.gameId);
+          console.log(IO.socket)
+          IO.socket.emit('hostCountdownFinished', App.gameId);
         });
 
-        var $players = App.Host.players;
+        var $player1 = App.Host.players[0];
+        var $player2 = App.Host.players[1];
 
+        var $p1score = $('#player1Score');
+        var $p2score = $('#player2Score');
+
+        $p1score.find('.playerName').html(App.Host.players[0].playerName);
+        $p2score.find('.playerName').html(App.Host.players[1].playerName);
+
+        $p1score.find('.score').attr('id', App.Host.players[0].mySocketId);
+        $p2score.find('.score').attr('id', App.Host.players[1].mySocketId);
         //Loop through every player
-        $.each(players, function(i, player){
-          var $score = $('#player'+i+'Score');
-          //Display players' names on screen
-          $score.find('.playerName').html(App.Host.players[i].playerName);
-          //Set score to 0 for each player
-          $score.find('.score').attr('id',App.Host.players[i].mySocketId);
-        });
+        // $.each($players, function(i, player){
+        //   var $score = $('#player'+i+'Score');
+        //   //Display players' names on screen
+        //   $score.find('.playerName').html(App.Host.players[i].playerName);
+        //   //Set score to 0 for each player
+        //   $score.find('.score').attr('id',App.Host.players[i].mySocketId);
+        // });
+
+
       },
 
       //Show the question for the current round on screen
@@ -421,10 +436,18 @@ jQuery(function($) {
       $el.text(startTime);
       App.doTextFit('#hostQuestion');
 
-      if( startTime <= 0 ){
-        clearInterval(timer);
-        callback();
-        return;
+      var timer = setInterval(countItDown, 1000);
+
+      function countItDown(){
+        startTime -= 1
+        $el.text(startTime);
+        App.doTextFit('#hostQuestion');
+
+        if( startTime <= 0 ){
+          clearInterval(timer);
+          callback();
+          return;
+        }
       }
     },
 
