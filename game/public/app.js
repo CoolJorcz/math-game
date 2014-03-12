@@ -105,7 +105,7 @@ jQuery(function($) {
     App.$doc.on('click', '#btnCreateGame', App.Host.onCreateClick);
     App.$doc.on('click', '#btnJoinGame', App.Player.onJoinClick);
     App.$doc.on('click', '#btnStart', App.Player.onPlayerStartClick);
-    App.$doc.on('click', '#btnAnswer', App.Player.onPlayerAnswerClick);
+    App.$doc.on('click', '.btnAnswer', App.Player.onPlayerAnswerClick);
     App.$doc.on('click', '#btnPlayerRestart', App.Player.onPlayerRestart);
     //App.$doc.on('click', '#btnPlayerLeave', App.Player.onLeaveRoomClick);
   },
@@ -190,7 +190,6 @@ jQuery(function($) {
 
         var $secondsLeft = $('#hostQuestion');
         App.countDown( $secondsLeft, 5, function(){
-          console.log(IO.socket)
           IO.socket.emit('hostCountdownFinished', App.gameId);
         });
 
@@ -222,7 +221,7 @@ jQuery(function($) {
       newQuestion : function(data){
         //Insert the new word into the DOM
         $('#hostQuestion').text(data.question);
-        App.doTextFit('#hostQuestion');
+        //App.doTextFit('#hostQuestion');
 
         //Update data for current round
         App.Host.currentCorrectAnswer = data.answer;
@@ -392,8 +391,10 @@ jQuery(function($) {
       //Show the list of answers for the current round
       newQuestion: function(data){
         // Create an unordered list element
-        var $list = $('<ul/>').attr('id', 'ulAnswers');
 
+        var div = '<div id="question"></div>'
+        var $list = $('<ul/>').attr('id', 'ulAnswers');
+        var $question = $(div).text(data.question);
         // Insert a list item for each word in the word list received from the server.
         $.each(data.list, function(){
           $list
@@ -407,8 +408,12 @@ jQuery(function($) {
             )
         });
 
+        var $round = $question.append($list);
+
+        console.log($round);
+
         // Insert list onto the screen
-        $('#gameArea').html($list);
+        $('#gameArea').html($round);
       },
 
       // Show GameOver screen
