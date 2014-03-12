@@ -1,36 +1,31 @@
+//Module Dependencies
 
-// var express = require('express');
+var express = require('express'),
+    path = require('path'),
+    _ = require('underscore'),
+    app = express(),
+    mathGame = require('./game'),
+    app.configure(function(){
+      app.use(express.logger('dev'));
+      app.use(express.static(path.join(__dirname, 'public')));
+    });
+    server = require('http').createServer(app).listen(8080);
 
 
-// var path = require('path');
+//Views and assets
 
-// // Create a new instance of Express
-// var app = express();
 
-// // Import the Math game file.
-// var math = require('./mathTriviaGame');
+// app.set("views", __dirname, "/views")
+// app.set("view engine", "jade")
 
-// // Create a simple Express application
-// app.configure(function() {
-//     // Turn down the logging activity
-//     app.use(express.logger('dev'));
 
-//     // Serve static html, js, css, and image files from the 'public' directory
-//     app.use(express.static(path.join(__dirname,'public')));
-// });
+//Listen for Socket.IO connections
+var io = require('socket.io').listen(server);
 
-// // Create a Node.js based http server on port 8080
-// var server = require('http').createServer(app).listen(8080);
+io.set('log level',1);
 
-// // Create a Socket.IO server and attach it to the http server
-// var io = require('socket.io').listen(server);
-
-// // Reduce the logging output of Socket.IO
-// io.set('log level',1);
-
-// // Listen for Socket.IO Connections. Once connected, start the game logic.
-// io.sockets.on('connection', function (socket) {
-//     math.initGame(io, socket);
-// });
-
+io.sockets.on('connection', function(socket){
+  console.log("client connected");
+  mathGame.initGame(io, socket);
+})
 

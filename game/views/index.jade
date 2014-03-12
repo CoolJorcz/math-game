@@ -1,25 +1,36 @@
+//- doctype html
+//- html
+//-   head
+//-     link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Alegreya+Sans+SC")
+//-     link(rel="stylesheet", href="/css/style.css")
+//-     script(type="text/javascript", src="/libs/socket.io.min.js")
+//-     script(type="text/javascript", src="/libs/jquery-2.0.2.min.js")
+//-     //- script(type="text/javascript", src="/js/index.js")
+//-     title Math Game
+//-   body
+//-     h1 Play a new Game
+//-     div
+//-       div.inlineBlock
+//-         span Your name:
+//-           input(type="text", placeholder="Enter here!")#name
+//-         br
+//-         form#messageForm
+//-           textarea(rows="4", cols="50", placeholder ="Share something!",
+//-             maxlength=200)#outgoingMessage
+//-           input(type="button", value="Share", disabled=true)#send
+//-       div.inlineBlock.topAligned
+//-         b Players
+//-         br
+//-         div#players
+//-     div#messages
+
 doctype html
 html
   head
     link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Alegreya+Sans+SC")
     link(rel="stylesheet", href="/css/style.css")
-    script(type="text/javascript", src="/js/socket.io.min.js")
-    script(type="text/javascript", src="/js/jquery-2.1.0.min.js")
-    script(type="text/javascript", src="/js/index.js")
+    script(type="text/javascript", src="/libs/socket.io.min.js")
+    script(type="text/javascript", src="/libs/jquery-2.0.2.min.js")
+    script(type="text/javascript", src="/libs/testFit.min.js")
+    script(type="text/javascript", src="/js/app.js")
     title Math Game
-  body
-    h1 Play a new Game
-    div
-      div.inlineBlock
-        span Your name:
-          input(type="text", placeholder="Enter here!")#name
-        br
-        form#messageForm
-          textarea(rows="4", cols="50", placeholder ="Share something!",
-            maxlength=200)#outgoingMessage
-          input(type="button", value="Share", disabled=true)#send
-      div.inlineBlock.topAligned
-        b Players
-        br
-        div#players
-    div#messages
