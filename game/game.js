@@ -1,6 +1,6 @@
 var io;
 var gameSocket;
-_ = require('underscore');
+var _ = require('underscore');
 
 /*******************************************
 
@@ -23,6 +23,7 @@ exports.initGame = function(sio, socket){
 
   // Player Events
   gameSocket.on('playerJoinGame', playerJoinGame);
+  gameSocket.on('playerLeaveGame', playerLeaveGame);
   gameSocket.on('playerAnswer', playerAnswer);
   gameSocket.on('playerRestart', playerRestart);
 }
@@ -103,9 +104,17 @@ function playerJoinGame(data) {
   }
 }
 
-// function playerLeaveGame(data){
-//   //TODO
-// }
+function playerLeaveGame(data){
+  /*
+  TODO :
+  socket.on('playerLeaveGame'
+  delete playerName from list
+  update list of players
+  io.sockets.emit('updatePlayers', players)
+  socket.broadcast.emit('updateGame', 'SERVER', socket.playerId + ' has disconnected');
+  socket.leave(socket.room);
+  */
+}
 
 //Player selects an answer
 function playerAnswer(data){

@@ -1,7 +1,6 @@
 ;
 jQuery(function($) {
   'use strict';
-
   var IO = {
 
     /* Connects IO client to Server */
@@ -259,17 +258,19 @@ jQuery(function($) {
 
       //End of Game logic
 
-      endGame : function(players){
+      endGame : function(data){
         // Loop through every player, get data for each player, sort players by score,
         // and return the highest score
         var pScores = [];
+        var players = App.Host.players;
+        console.log(players);
         $.each(players, function(index, player){
-          var $p = $('#player'+index+'Score');
+          var $p = $('#player'+(index+1)+'Score');
           var pScore = +$p.find('.score').text();
-          var pName = $p.find('.playerName').text();
-          pScores += { pName: pScore };
+          var pName = player.playerName;
+          pScores.push({ pName: pScore });
         });
-
+        console.log(pScores);
         //Return ascending scores
         var rankedScores = function(scores) {
           var sortable = [];
@@ -281,7 +282,7 @@ jQuery(function($) {
 
         //Winner will either be the player with the highest score, or it will be a tie
         var finalScores = rankedScores(pScores);
-        var winner = (_.uniq(finalScores).length() === rankedScores.length()) ? finalScores[0][1] + " Wins!" : "It's a Tie!";
+        var winner = ($.unique(finalScores).length === rankedScores.length) ? finalScores[0][1] + " Wins!" : "It's a Tie!";
 
         $('#hostQuestion').text(winner);
         App.doTextFit('#hostQuestion');
@@ -409,8 +410,6 @@ jQuery(function($) {
         });
 
         var $round = $question.append($list);
-
-        console.log($round);
 
         // Insert list onto the screen
         $('#gameArea').html($round);
