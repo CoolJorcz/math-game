@@ -263,18 +263,22 @@ jQuery(function($) {
         // and return the highest score
         var pScores = [];
         var players = App.Host.players;
-        console.log(players);
+
         $.each(players, function(index, player){
+          var num = index + 1;
           var $p = $('#player'+(index+1)+'Score');
-          var pScore = +$p.find('.score').text();
+          var score = +$p.find('.score').text();
           var pName = player.playerName;
-          pScores.push({ pName: pScore });
+          var datum = [pName, score]
+          pScores.push(datum);
         });
         console.log(pScores);
         //Return ascending scores
         var rankedScores = function(scores) {
           var sortable = [];
+          console.log(scores)
           for(var name in scores){
+            console.log(name)
             sortable.push([name, scores[name]])
           }
           return sortable.sort(function(a,b){ return b[1]-a[1]})
@@ -282,6 +286,7 @@ jQuery(function($) {
 
         //Winner will either be the player with the highest score, or it will be a tie
         var finalScores = rankedScores(pScores);
+        console.log(finalScores)
         var winner = ($.unique(finalScores).length === rankedScores.length) ? finalScores[0][1] + " Wins!" : "It's a Tie!";
 
         $('#hostQuestion').text(winner);
